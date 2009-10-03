@@ -1,0 +1,19 @@
+=Dictionary
+
+Dictionary is intended as an application that manages word, acronym, and phrase definitions (jargon) for a specific community.  Each item that has a definition is called a "term".  It is particularly useful in larger communities where new members have a steep learning curve remembering the custom acronyms and slang particular to that community.  A community is defined to be any organization of people that has developed language and expressions specific to it.  Outsiders to this community are challenged in participating in this community by their unfamiliarity with the community's jargon.  
+
+==Quick Start
+
+This repo represents the very beginning of a web application project.  No Rails has yet been generated; indeed the application's behavior is now being defined as "napkin diagrams" (published in the <todo> folder) and Cucumber feature headers.
+
+This application's implementation is suggested as an exercise in web application development that a user group could work on together to develop their "agile" skills. There is a bias towards Ruby and Merb/Rails in this repo.
+
+Currently the author is developing this as an idea for the Orange County (CA) Ruby User's Group as a group project.  If you would like to run with this in your own user group, please feel free to clone and develop in your own user group.
+
+==Contributing
+
+If you've browsed this repo, you can see that it is still in requirements phase.  If you would like to participate, please send an email to the author (scottnelsonsmith@gmail.com).
+
+==Status
+
+* October 2, 2009: The functionality desired for this application is coarsely defined in the Cucumber files in the "Feature" statements.

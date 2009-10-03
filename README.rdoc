@@ -1,4 +1,4 @@
-=Dictionary
+=Community Dictionary
 
 Dictionary is intended as an application that manages word, acronym, and phrase definitions (jargon) for a specific community.  Each item that has a definition is called a "term".  It is particularly useful in larger communities where new members have a steep learning curve remembering the custom acronyms and slang particular to that community.  A community is defined to be any organization of people that has developed language and expressions specific to it.  Outsiders to this community are challenged in participating in this community by their unfamiliarity with the community's jargon.  
 

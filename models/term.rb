@@ -16,6 +16,6 @@ class Term < Ohm::Model
   end
   
   def to_hash
-    super.merge(:term => term, :definitions => definitions.map(&:to_json))
+    super.merge(:term => term, :definitions => definitions.all)
   end
 end

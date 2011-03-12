@@ -18,7 +18,7 @@ class Vote < Ohm::Model
     if vote = Vote.find(:user_id => attributes[:user_id], :definition_id => attributes[:definition_id]).first
       previous_value = vote.value.dup
       vote.value = attributes[:value]
-      vote.vote_flipped = true unless vote.value == previous_value
+      vote.vote_flipped = vote.value != previous_value
     else
       vote = Vote.new(attributes)
       vote.score_created = true

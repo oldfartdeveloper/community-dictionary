@@ -1,4 +1,6 @@
 class Definition < Ohm::Model
+  include Ohm::Callbacks
+  
   attribute :blurb
   attribute :detail
   counter :score
@@ -7,9 +9,17 @@ class Definition < Ohm::Model
   reference :user, User
   collection :votes, Vote
   
+  after :create, :update_recent
+  after :update, :update_recent
+  after :delete, :remove_from_recent
+  
+  def self.recent(recent_count = 10)
+    key[:recent].zrevrange(0, recent_count - 1).map(&Definition)
+  end
+  
   def validate
-    # assert_present :blurb
-    # assert_numeric :score
+    assert_present :blurb
+    assert_numeric :score
   end
   
   def add_score(by = 1)
@@ -26,9 +36,9 @@ class Definition < Ohm::Model
   
   def rescore_with_flipped_vote(vote)
     if vote.up_vote?
-      subtract_score(2)
-    elsif vote.down_vote?
       add_score(2)
+    elsif vote.down_vote?
+      subtract_score(2)
     end
   end
   
@@ -46,5 +56,15 @@ class Definition < Ohm::Model
     elsif vote.down_vote?
       add_score
     end
+  end
+  
+  protected
+  
+  def update_recent
+    self.class.key[:recent].zadd(Time.now.to_i, id)
+  end
+  
+  def remove_from_recent
+    self.class.key[:recent].zrem(id)
   end
 end

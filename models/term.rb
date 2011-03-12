@@ -5,7 +5,13 @@ class Term < Ohm::Model
   
   index :term
   
+  def self.undefined_terms
+    # This is likely not very efficient.  Find a faster way.
+    all.select { |term| term.definitions.empty? }
+  end
+  
   def validate
+    assert_present :term
     assert_unique :term
   end
   

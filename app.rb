@@ -32,6 +32,10 @@ module Glossary
       get '/' do
         Term.all.all
       end
+
+      post '/' do
+        Term.create(:term => params[:term])
+      end
     end
 
     resources :definitions do
@@ -50,12 +54,13 @@ module Glossary
       end
       
       post '/' do
-        User.create(:name => params[:name])
+        User.create(:name => params[:name], :email => params[:email])
       end
       
       put '/:id' do
         user = User[params[:id]] || find_error!("user")
-        user.name = params[:name]
+        user.name = params[:name] if params[:name]
+        user.email = params[:email] if params[:email]
         user.save
       end
       

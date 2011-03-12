@@ -8,4 +8,5 @@ gem "grape", "0.1.3"
 group :development, :test do
   gem "rspec", "~> 2.5.0", :require => "spec"
   gem "faker", "0.9.5"
+  gem "timecop", "0.3.5"
 end

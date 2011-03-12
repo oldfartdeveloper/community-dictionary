@@ -34,22 +34,22 @@ describe Definition do
     
     it "should increment by 2 for an up vote that was a down vote" do
       @vote.should_receive(:up_vote?).and_return(true)
-      lambda { @definition.rescore_with_flipped_vote(@vote) }.should change{ @definition.score }.by(2)
+      lambda { @definition.vote_flip(@vote) }.should change{ @definition.score }.by(2)
     end
         
     it "should decrement by 2 when an up vote is getting flipped to a down vote" do
       @vote.should_receive(:down_vote?).and_return(true)
-      lambda { @definition.rescore_with_flipped_vote(@vote) }.should change{ @definition.score }.by(-2)
+      lambda { @definition.vote_flip(@vote) }.should change{ @definition.score }.by(-2)
     end
     
     it "should increment by 1 for a new up vote" do
       @vote.should_receive(:up_vote?).and_return(true)
-      lambda { @definition.rescore_with_new_vote(@vote) }.should change{ @definition.score }.by(1)
+      lambda { @definition.new_vote(@vote) }.should change{ @definition.score }.by(1)
     end
     
     it "should decrement by 1 for a new down vote" do
       @vote.should_receive(:down_vote?).and_return(true)
-      lambda { @definition.rescore_with_new_vote(@vote) }.should change{ @definition.score }.by(-1)
+      lambda { @definition.new_vote(@vote) }.should change{ @definition.score }.by(-1)
     end
 
     it "should decrement by 1 when an up vote is deleted" do

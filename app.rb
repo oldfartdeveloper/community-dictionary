@@ -43,6 +43,20 @@ module Glossary
         Definition[params[:id]] || find_error!("definition")
       end
     end
+
+    resources :votes do
+      get "/" do
+        Vote.all.all
+      end
+      
+      put "/definitions/:definition_id/users/:user_id" do
+        # TODO move this to model and catch exception
+        if User[params[:user_id]] && Definition[params[:definition_id]] 
+          Vote.create_or_update(:value => params[:value], :user_id => params[:user_id],
+                                :definition_id => params[:definition_id])
+        end
+      end
+    end
     
     resources :users do
       get '/' do
@@ -70,14 +84,5 @@ module Glossary
       end
     end
     
-    resources :votes do
-      put "/definitions/:definition_id/user/:user_id" do
-        # TODO move this to model and catch exception
-        if User[params[:user_id]] && Definition[params[:definition_id]] 
-          Vote.create_or_update(:value => params[:value], :user_id => params[:user_id],
-                                :definition_id => params[:definition_id])
-        end
-      end
-    end
   end  
 end

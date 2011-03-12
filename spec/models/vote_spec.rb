@@ -48,7 +48,7 @@ describe Vote do
         vote = Vote.create_or_update(:user_id => 3, :definition_id => 5, :value => 'up')
         vote.stub(:definition).and_return(mock(Definition))
         Vote.should_receive(:find).and_return([vote])
-        vote.definition.should_receive(:rescore_with_flipped_vote).with(vote)
+        vote.definition.should_receive(:vote_flip).with(vote)
         Vote.create_or_update(:user_id => 3, :definition_id => 5, :value => 'down')
       end
       
@@ -56,7 +56,7 @@ describe Vote do
         vote = Vote.create_or_update(:user_id => 3, :definition_id => 5, :value => 'up')
         vote.stub(:definition).and_return(mock(Definition))
         Vote.should_receive(:find).and_return([vote])
-        vote.definition.should_not_receive(:rescore_with_flipped_vote)
+        vote.definition.should_not_receive(:vote_flip)
         Vote.create_or_update(:user_id => 3, :definition_id => 5, :value => 'up')
       end
     end
@@ -68,11 +68,10 @@ describe Vote do
       end
       
       it "should tell the associated definition to rescore with the new vote" do
-        definition = mock(definition)
-        @vote.stub(:definition => definition)
+        definition = mock(Definition)
+        @vote.stub(:definition).and_return(definition) 
         Vote.should_receive(:new).and_return(@vote)
-
-        definition.should_receive(:rescore_with_new_vote).with(@vote)
+        definition.should_receive(:new_vote).with(@vote)
         Vote.create_or_update(:user_id => 3, :definition_id => 1, :value => 'up')
       end
     end

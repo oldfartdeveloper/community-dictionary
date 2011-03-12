@@ -34,7 +34,7 @@ class Definition < Ohm::Model
     super.merge(:blurb => blurb, :score => score)
   end
   
-  def rescore_with_flipped_vote(vote)
+  def vote_flip(vote)
     if vote.up_vote?
       add_score(2)
     elsif vote.down_vote?
@@ -42,7 +42,7 @@ class Definition < Ohm::Model
     end
   end
   
-  def rescore_with_new_vote(vote)
+  def new_vote(vote)
     if vote.up_vote?
       add_score
     elsif vote.down_vote?

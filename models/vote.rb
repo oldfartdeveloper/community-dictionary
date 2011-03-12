@@ -8,7 +8,11 @@ class Vote < Ohm::Model
   
   index :value
   
-  attr_accessor :vote_flipped, :score_created
+  after :save, :handle_save_scoring
+  before :delete, :stash_definition
+  after :delete, :notify_definition_vote_deleted
+  
+  attr_accessor :vote_flipped, :score_as_new
   
   def validate
     assert_format :value, /(up|down)/
@@ -16,12 +20,12 @@ class Vote < Ohm::Model
   
   def self.create_or_update(attributes)
     if vote = Vote.find(:user_id => attributes[:user_id], :definition_id => attributes[:definition_id]).first
-      previous_value = vote.value.dup
+      previous_value = vote.value
       vote.value = attributes[:value]
       vote.vote_flipped = vote.value != previous_value
     else
       vote = Vote.new(attributes)
-      vote.score_created = true
+      vote.score_as_new = true
     end
     vote.save
   end
@@ -32,33 +36,37 @@ class Vote < Ohm::Model
   
   def down_vote?
     ! up_vote?
-  end  
+  end
+  
+  def to_hash
+    super.merge(:user => user, :definition => definition)
+  end
   
   protected
 
-  def rescore_as_flip
-    definition.rescore_with_flipped_vote(self) if definition
-  end
-  
-  def rescore_as_create
-    definition.rescore_with_new_vote(self) if definition
-  end
-  
-  def after_save
+  def handle_save_scoring
     if vote_flipped
       self.vote_flipped = false
-      rescore_as_flip
-    elsif score_created
-      self.score_created = false
-      rescore_as_create
+      notify_definition_vote_flip
+    elsif score_as_new
+      self.score_as_new = false
+      notify_definition_new_vote
     end
   end
   
-  def before_delete
+  def notify_definition_vote_flip
+    definition.vote_flip(self) if definition
+  end
+  
+  def notify_definition_new_vote
+    definition.new_vote(self) if definition
+  end
+  
+  def stash_definition
     @pre_delete_definition = definition
   end
   
-  def after_delete
+  def notify_definition_vote_deleted
     @pre_delete_definition.rescore_with_deleted_vote(self)
   end
 end

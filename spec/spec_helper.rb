@@ -10,6 +10,6 @@ ENV['RACK_ENV'] ||= 'test'
 RSpec.configure do |config|
   config.before(:each) do
     Ohm.flush
-    config.before { Timecop.return }
+    Timecop.return
   end
 end

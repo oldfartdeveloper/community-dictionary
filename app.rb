@@ -4,7 +4,7 @@ require "init"
 
 module Glossary
   class API < Grape::API
-    version '1'
+    # version '1'
     
     helpers do
       def find_error!(klass_name)

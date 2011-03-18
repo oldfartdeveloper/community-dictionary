@@ -1,0 +1,14 @@
+<h1>Terms</h1>
+{{#view "CommunityDictionary.CreateTermView"}}
+<input id="new-term" type="text"
+       placeholder="What do you want to define?" />
+{{/view}}
+
+
+<h1>BEFORE</h1>
+
+{{#collection "CommunityDictionary.termListView"}}
+  <div class='term-content'>{{content/term}}</div>
+{{/collection}}
+
+<h1>AFTER</h1>
